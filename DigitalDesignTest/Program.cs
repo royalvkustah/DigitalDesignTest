@@ -14,7 +14,7 @@ namespace DigitalDesignTest
             dictionary = WordSplitter.Execute(pathPrefix+"book1.fb2");
             foreach (var item in dictionary)
             {
-                Console.WriteLine(item.Key+"______"+item.Value);
+                Console.WriteLine(item.Key+"__________"+item.Value);
             }
             FileWriter.WriteFile(dictionary);
         }
