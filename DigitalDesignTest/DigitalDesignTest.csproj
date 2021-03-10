@@ -6,7 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="FileWriter.cs" />
+    <Compile Remove="WordSplitter.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="FileWriter.netmodule" />
+    <None Remove="new.rsp" />
+    <None Remove="new.txt" />
+    <None Remove="prog.exe" />
+    <None Remove="WordSplitter.netmodule" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DigitalDesignLibrary\DigitalDesignLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>
