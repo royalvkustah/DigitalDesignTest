@@ -1,12 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System;
 
 
 namespace DigitalDesignLibrary
 {
     public static class WordSplitter
     {
+        static object locker = new object();
         private static Dictionary<string, int> Execute(string path)
         {
             string line;
@@ -18,16 +21,23 @@ namespace DigitalDesignLibrary
                     if (line.StartsWith("<p>") && line.EndsWith("</p>"))
                     {
                         line = line.Substring(3, line.Length - 7);
-                        string[] words = line.Split(' ');
-                        foreach (var item in words)
-                        {
-                            AddWord(ModifyWord(item), wordsDict);
-                        }
+                        AddingCheck(line, wordsDict);
                     }
                 }
             }
             RemoveSpaces(wordsDict);
             return SortDictionary(wordsDict);
+        }
+        public static void AddingCheck(string line, Dictionary<string, int> wordsDict)
+        {
+            lock (locker)
+            {
+                string[] words = line.Split(' ');
+                foreach (var item in words)
+                {
+                    AddWord(ModifyWord(item), wordsDict);
+                }
+            }
         }
         private static void AddWord(string word, Dictionary<string, int> dict)
         {
@@ -67,6 +77,56 @@ namespace DigitalDesignLibrary
                 }
             }
             return dict;
+        }
+
+        public static Dictionary<string, int> ExecuteMulty(string path)
+        {
+            List<string> wordsList = new List<string>();
+            string line;
+            Dictionary<string, int> wordsDict = new Dictionary<string, int>();
+            Thread MyThread = new Thread(() => AddInDict(wordsList, wordsDict));
+            MyThread.Start();
+            using (StreamReader sr = new StreamReader(path))
+            {
+                while ((line = sr.ReadLine()) != null)
+                {
+                    if (line.StartsWith("<p>") && line.EndsWith("</p>"))
+                    {
+                        line = line.Substring(3, line.Length - 7);
+                        AddingCheckList(line, wordsList);
+                    }
+                }
+            }
+            Thread.Sleep(100);
+            RemoveSpaces(wordsDict);
+            return SortDictionary(wordsDict);
+        }
+        public static List<string> AddingCheckList(string line, List<string> wordsList)
+        {
+            lock (locker)
+            {
+                string[] words = line.Split(' ');
+                foreach (var item in words)
+                {
+                    wordsList.Add(ModifyWord(item));
+                }
+            }
+            return wordsList;
+        }
+        public static void AddInDict(List<string> list, Dictionary<string, int> dictionary)
+        {
+                Thread.Sleep(100);
+                foreach (var item in list)
+                {
+                    if (dictionary.ContainsKey(item))
+                    {
+                        dictionary[item]++;
+                    }
+                    else
+                    {
+                        dictionary.Add(item, 1);
+                    }
+                }
         }
     }
 }

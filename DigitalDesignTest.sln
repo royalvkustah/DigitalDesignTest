@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalDesignTest", "DigitalDesignTest\DigitalDesignTest.csproj", "{979CB52C-51EE-4976-884A-3AD5AC76EF45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitalDesignLibrary", "DigitalDesignLibrary\DigitalDesignLibrary.csproj", "{D249C0E9-1AA3-4439-A4B4-2B0627A03A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DigitalDesignLibrary", "DigitalDesignLibrary\DigitalDesignLibrary.csproj", "{D249C0E9-1AA3-4439-A4B4-2B0627A03A26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
