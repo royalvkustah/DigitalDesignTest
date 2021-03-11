@@ -20,16 +20,8 @@ namespace DigitalDesignTest
             var t = typeof(WordSplitter);
             var f = t.GetMethod("Execute", BindingFlags.NonPublic|BindingFlags.Static);
             //           dictionary = (Dictionary<string, int>)f.Invoke(null,new object[] { pathPrefix + "book13.fb2" });
-            //           Thread MyThread = new Thread(() => WordSplitter.ExecuteMulty(pathPrefix + "book13.fb2"));
-            //         MyThread.Start();
-            //       Thread.Sleep(5000);
             dictionary = WordSplitter.ExecuteMulty(pathPrefix + "book13.fb2");
 
-  
-//            foreach (var item in Parameter.dict)
-  //          {
-    //            Console.WriteLine(item.Key + "__________" + item.Value);
-      //      }
             using (StreamWriter sw = new StreamWriter(@"..\..\..\Files\words.txt", false))
             {
                 foreach (var item in dictionary)
