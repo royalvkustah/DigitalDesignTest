@@ -6,6 +6,6 @@ namespace DigitalDesignLibrary
 {
     public static class Parameter
     {
-        public static Dictionary<string, int> dict;
+        public static Dictionary<string, int> dicts;
     }
 }
