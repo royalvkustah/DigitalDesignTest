@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 
 namespace DigitalDesignLibrary
@@ -13,9 +14,12 @@ namespace DigitalDesignLibrary
         static object locker = new object();
         private static Dictionary<string, int> Execute(string text)
         {
+            Stopwatch swatch = new Stopwatch();
+            swatch.Start();
             Dictionary<string, int> wordsDict = new Dictionary<string, int>();
             SeparateWords(text, wordsDict);
             RemoveSpaces(wordsDict);
+            Console.WriteLine(swatch.ElapsedMilliseconds);
             return SortDictionary(wordsDict);
         }
         private static void SeparateWords(string text, Dictionary<string, int> wordsDict)
@@ -31,6 +35,8 @@ namespace DigitalDesignLibrary
         }
         private static void AddWord(string word, Dictionary<string, int> dict)
         {
+            word = ModifyWord(word);
+            Console.WriteLine(word);
             if (dict.ContainsKey(word))
             {
                 dict[word]++;
@@ -42,7 +48,7 @@ namespace DigitalDesignLibrary
         }
         private static string ModifyWord(string word)
         {
-            char[] CharsToTrim = { '.', ',', '!', '?', ':', '"', '-', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+            char[] CharsToTrim = { '.', ',', '!', '?', ':', '"', '-', ' ', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '{','}','(',')' };
             while (word.Contains('<'))
             {
                 int a = word.IndexOf('<');
@@ -65,17 +71,10 @@ namespace DigitalDesignLibrary
         }
         private static Dictionary<string, int> SortDictionary(Dictionary<string, int> dict)
         {
-            try
-            {
+           
                 dict = dict.OrderByDescending(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
                 return dict;
-            }
-            catch (Exception)
-            {
-                dict = dict.OrderByDescending(pair => pair.Value).ToDictionary(pair => pair.Key, pair => pair.Value);
-                return dict;
-            }
-            
+           
         }
         public static Dictionary<string, int> ExecuteMulty(string path)
         {
@@ -146,11 +145,14 @@ namespace DigitalDesignLibrary
        //         Console.WriteLine("SORRY");
             }
         }
-        public static Dictionary<string, int> ExecutePrarllel(string text)
+        public static Dictionary<string, int> ExecuteParallel(string text)
         {
+            Stopwatch swatch = new Stopwatch();
+            swatch.Start();
             Dictionary<string, int> wordsDict = new Dictionary<string, int>();
             SeparateWordsParallel(text, wordsDict);
-            RemoveSpaces(wordsDict);
+ //           RemoveSpaces(wordsDict);
+            Console.WriteLine(swatch.ElapsedMilliseconds);
             return SortDictionary(wordsDict);
         }
         public static void SeparateWordsParallel(string text, Dictionary<string, int> wordsDict)
@@ -160,10 +162,11 @@ namespace DigitalDesignLibrary
         }
         private static Dictionary<string, int> AddWordParallel(string word, Dictionary<string, int> dict)
         {
-                Console.WriteLine(word);
+            word = ModifyWord(word);
+                Console.WriteLine(word+"________Thread:"+Task.CurrentId);
                 try
                 {
-                    if (dict.ContainsKey(word))
+                    if (dict.ContainsKey(word) && word!=null)
                     {
                         dict[word]++;
                     }

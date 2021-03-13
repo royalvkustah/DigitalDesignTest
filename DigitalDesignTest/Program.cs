@@ -14,8 +14,6 @@ namespace DigitalDesignTest
         public static string pathPrefix = @"..\..\..\Files\";
         static void Main(string[] args)
         {
-            Stopwatch swatch = new Stopwatch();
-            swatch.Start();
             string line;
             string text="";
             using (StreamReader sr = new StreamReader(pathPrefix + "book13.fb2"))
@@ -32,9 +30,8 @@ namespace DigitalDesignTest
             var dictionary = new Dictionary<string, int>();
             var t = typeof(WordSplitter);
             var f = t.GetMethod("Execute", BindingFlags.NonPublic|BindingFlags.Static);
- //           dictionary = (Dictionary<string, int>)f.Invoke(null,new object[] { text });
-            dictionary = WordSplitter.ExecutePrarllel(text);
-
+            dictionary = (Dictionary<string, int>)f.Invoke(null,new object[] { text });
+            dictionary = WordSplitter.ExecuteParallel(text);
             using (StreamWriter sw = new StreamWriter(@"..\..\..\Files\words.txt", false))
             {
                 foreach (var item in dictionary)
@@ -42,16 +39,10 @@ namespace DigitalDesignTest
                     sw.WriteLine(item.Key + "____________________" + item.Value);
                 }
             }
-            Console.WriteLine(swatch.ElapsedMilliseconds);
-                              foreach (var item in dictionary)
-                          {
-                          Console.WriteLine(item.Key+"__________"+item.Value);
-                  }
-            Console.WriteLine("_______________________________________________________________________");
- //           foreach (var item in Parameter.dicts)
-   //         {
-     //           Console.WriteLine(item.Key + "__________" + item.Value);
-       //     }
+            foreach (var item in dictionary)
+                {
+                    Console.WriteLine(item.Key+"__________"+item.Value);
+                }
         }
     }
 }
